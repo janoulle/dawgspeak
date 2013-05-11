@@ -7,7 +7,10 @@ $(document).ready(function(){
 		$('html, body').css("cursor", "wait");
 		$('#wordExplanation').empty();
 		value = typeahead.val();
-		if (value.length > 1){
+		//Only make ajax call if the typed word is in the list of words
+		if (words.indexOf(value) > -1){
+			$('#messages').empty();
+			found = true;
 			$.ajax({
 				type: "POST",
 				url: 'includes/controllers/route.php',
@@ -45,6 +48,8 @@ $(document).ready(function(){
 					$('#wordExplanation').append(response);
 				}
 			});
+		}else{
+			$('#messages').append("Please choose a word in the dictionary.");
 		}
 	});
 });
