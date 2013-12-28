@@ -1,4 +1,5 @@
-    <script src="<?php echo $asseturl ."/js/jquery-1.9.1.min.js"; ?>"></script>
+    <script src="<?php echo $asseturl ."/js/jquery-1.10.2.min.js"; ?>"></script>
+    <script src="<?php echo $asseturl ."/js/jquery.highlight.js"; ?>"></script>
     <script src="<?php echo $asseturl ."/js/bootstrap.min.js"; ?>"></script>
     <script src="<?php echo $asseturl ."/js/alertify.min.js"; ?>"></script>
     <script src="<?php echo $asseturl ."/js/dawgspeak.js"; ?>"></script>

@@ -1,13 +1,8 @@
-<?php
-?>
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>UGA Slang</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<html>
+	<head>    
+		<title>Test</title>
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    	<!-- Bootstrap -->
     	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
     	<style type="text/css">
     	
@@ -71,8 +66,8 @@
 			
 			.tt-suggestion.tt-is-under-cursor {
 			  color: #F0F0F0;
-			  background-color: #428BCA;
-			  border: 2px solid #f0f0f0;
+			  background-color: #004A61;
+			  border: 2px solid black;
 			}
 			
 			.tt-suggestion p {
@@ -84,25 +79,6 @@
 			    font-size: 0 !important;
 			    visibility:hidden;
 			}
-			
-			.highlight{
-				font-weight:bold;
-				color: #0097cf;
-			}
-			
-			.urbandictionary {
-				width: 90%;
-				color: #696969;
-				margin-left: 0.6in;
-				line-height: 0.9em;
-				font-size: 3em;
-				border-width: 10px;
-			}
-			
-			.urbandictionary h4{
-				font-weight:bold;
-			}
-			
     	</style>
 
 	    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -113,7 +89,6 @@
 	    <![endif]-->
     
     	<script src="assets/js/jquery-1.10.2.min.js" type="text/javascript"></script>
-    	<script src="assets/js/jquery.highlight.js" type="text/javascript"></script>
     	<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
     	<script src="assets/js/typeahead.min.js" type="text/javascript"></script>
     	<script src="assets/js/hogan.min.js" type="text/javascript"></script>
@@ -130,101 +105,13 @@
 				})
 				.on('typeahead:selected',function(obj,datum){
 					var word  = datum.value;
-                    //console.log(word);
-                    //console.log(obj);
-                    //console.log(datum);
-                    $('#wordExplanation')
-                    	.html("")
-                    	.removeClass("hidden")
-                    	.append(datum.definition)
-						.show()						
-                    	.animate({
-							width: "90%",
-							color: "#cfcfcf",
-							marginLeft: "0.6in",
-							lineHeight: "0.9em",
-							fontSize: "3em",
-							borderWidth: "10px"
-						}, { duration: 800, queue: false });
-						//highlight the word in the definition
-						$('#wordExplanation').highlight(word);
-						urbanDefinition(word);
+                    console.log(word);
+                    console.log(obj);
+                    console.log(datum);
 				});
 			});
-			
-			/**
-			 * get the first explanation from urban dictionary
-			 */
-			function urbanDefinition(word){
-				$.getJSON('http://api.urbandictionary.com/v0/define?term=' + word, function(data){
-					//console.log(data.list[0]);
-					//console.log(data.tags);
-					/*var arr = data.tags;
-					var msg = "<h4>Urban Dictionary Related Terms</h4>";
-					msg += "<p>";
-					for (var key in arr) {
-					    msg += arr[key] + ",";
-					}
-					if (msg.length > 3){
-						msg = msg.substring(0,msg.length-1);
-					}
-					msg += "</p>";
-					
-					$('#urbanDictionary-tags')
-						.html("")
-						.removeClass("hidden")
-						.addClass("urbandictionary")
-						.append(msg);*/
-					
-					var msg2 = "<h4>Top Urban Dictionary Definition</h4>";
-					msg2 += "<p>" + data.list[0].definition + "</p>";
-
-						
-					$('#urbanDictionary-definition')
-						.html("")
-						.removeClass("hidden")
-						.addClass("urbandictionary")
-						.append(msg2);
-				})
-				.done(function(json){
-					console.log("Success!");
-				})
-				.fail(function(jqxhr, textStatus, error ){
-					console.log("Error getting Urban Dictionary results: " + textStatus);
-				});				
-			}
-			
-			/**
-			 * Get the top example from wordnik
-			 */
-			function wordnikDefinition(word){
-				$.ajax({
-                	type: "POST",
-                    url: 'classes/controllers/wordcontroller.php',
-                    data: { action : "useWordnik", word : word},
-                    dataType: "json"
-                })
-                .done(function(msg){
-                    $('body').css('cursor', 'auto');
-                    console.log(msg);
-                    if (msg.length == 0){
-                    	$('#messages').html("").append("No sections found.").show();
-                    }else{
-                    	
-                    }
-                })
-                .fail(function(msg){
-                    $('body').css('cursor', 'auto');
-                    $('#messages').html("").append(msg.responseText).show();
-                    setTimeout(function(){ 
-                    	$('#messages').hide("slow",function(){}); 
-                    }, 4000);
-                   console.log(msg.responseText);
-                });
-			}
 		</script>
-  	</head>
-	
+	</head>
 	<body>
 		<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
 			<div class="container">
@@ -235,54 +122,23 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="./">DawgSpeak</a>
+					<a class="navbar-brand" href="./">CoursePicker</a>
 				</div>
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
 						<li class="active"><a href="./">Home</a></li>
 						<li><a href="#aboutModal" data-toggle="modal" id="about">About</a></li>
-						<li><a href="#contactModal" data-toggle="modal" id="contact">Contact</a></li>
+						<li><a href="#howtoModal" data-toggle="modal" id="howto">How To</a></li>
 					</ul>				  
 				</div><!-- /.nav-collapse -->
 			</div><!-- /.container -->
 		</div><!-- /.navbar -->
 
-
-	    <div class="container">
-			<div class="row">
-				<ul class="nav nav-pills">
-					<li class="active"><a href="#searchVocab" data-toggle="tab">Search Vocab</a></li>
-					<li><a href="#browseVocab"  data-toggle="tab">Browse Vocab</a></li>
-				</ul>
-				<div class="tab-content">
-					<div class="tab-pane active" id="searchVocab">
-						<h1>Enter word:</h1>
-						<input id="wordInput" name="wordInput" placeholder="E.g. crunk" >
-						<span id="messages" class="hidden"></span>
-						<div id="wordExplanation" class="span4 hidden">
-							Here
-						</div>
-						<div id="urbanDictionary-definition" class="hidden">
-							<hr/>
-							Here
-						</div>
-						<div id="urbanDictionary-tags" class="hidden">
-							<hr/>
-							Here
-						</div>
-					</div>
-					<div class="tab-pane" id="browseVocab">
-						<div data-target=".navbar">
-	
-						</div>
-						<div data-spy="scroll" data-target=".navbar">
-	
-						</div>
-					</div>
-				</div>
-			</div> <!-- row-->
-	    </div> <!-- /container -->
-
+		<div class="container">
+			<input id="wordInput" name="wordInput" class="form-control" type="text" placeholder="E.g. crunk">
+		</div>
+		
+		
 
         <!-- About Modal -->
         <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLabel" aria-hidden="true">
@@ -302,7 +158,7 @@
         </div><!-- /.modal -->	
 
 
-		<!-- Contact Modal -->
+	<!-- Contact Modal -->
         <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel" aria-hidden="true">
                   <div class="modal-dialog">
                                 <div class="modal-content">
@@ -319,7 +175,5 @@
                                 </div><!-- /.modal-content -->
                   </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->	
-        
-		<?php include 'includes/analyticstracking.inc'; ?>
-  	</body>
+	</body>
 </html>

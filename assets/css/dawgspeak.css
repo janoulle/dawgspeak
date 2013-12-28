@@ -10,12 +10,22 @@
 	outline: none;
 }
 
+span.highlight{
+	font-weight:bold;
+	color: #0097cf;
+}
+
 .hidden{
 	display:none;
 }
 
 #wordInput:focus{
 	border: 2px solid #0097cf;
+}
+
+#messages{
+	font-weight:bold;
+	color: #ff0000;
 }
 
 .span4{
