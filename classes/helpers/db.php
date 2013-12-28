@@ -1,6 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../../../../creds/credentials.inc';
-require_once dirname(__FILE__) . './word.php';
+require_once dirname(__FILE__) . '/word.php';
 class DB{
 	private $getdefinitions;
 	private $gettypes;

@@ -90,7 +90,7 @@
 				color: #0097cf;
 			}
 			
-			.urbandictionary {
+			.urbandictionary, .wordnik {
 				width: 90%;
 				color: #696969;
 				margin-left: 0.6in;
@@ -149,6 +149,7 @@
 						//highlight the word in the definition
 						$('#wordExplanation').highlight(word);
 						urbanDefinition(word);
+						wordnikDefinition(word);
 				});
 			});
 			
@@ -178,7 +179,6 @@
 					
 					var msg2 = "<h4>Top Urban Dictionary Definition</h4>";
 					msg2 += "<p>" + data.list[0].definition + "</p>";
-
 						
 					$('#urbanDictionary-definition')
 						.html("")
@@ -207,17 +207,40 @@
                 .done(function(msg){
                     $('body').css('cursor', 'auto');
                     console.log(msg);
-                    if (msg.length == 0){
-                    	$('#messages').html("").append("No sections found.").show();
+                    if (msg.errorMessage.length == 0){
+                    	if (msg.word !== null){
+	                    	var msgs = "<h4>Top Wordnik Example</h4>";
+							msgs += "<p>" + msg.word + "</p>";
+	                    	$('#wordNik-example')
+	                    		.html("")
+	                    		.removeClass("hidden")
+	                    		.addClass("wordnik")
+	                    		.append(msgs)
+	                    		.show();
+                    	}
                     }else{
-                    	
+                    	var msgs = "<h4>Top Wordnik Example</h4>";
+						msgs += "<p>" + msg.errorMessage + "</p>";
+                    	$('#wordNik-example')
+                    		.html("")
+                    		.removeClass("hidden")
+                    		.addClass("wordnik")
+                    		.append(msgs)
+                    		.show();
                     }
                 })
                 .fail(function(msg){
                     $('body').css('cursor', 'auto');
-                    $('#messages').html("").append(msg.responseText).show();
+                    var msgs = "<h4>Top Wordnik Example</h4>";
+					msgs += "<p>" + msg.responseText + "</p>";
+                    $('#wordNik-example')
+                    	.html("")                    	
+                   		.removeClass("hidden")
+                    	.append(msgs)
+						.addClass("wordnik")
+                    	.show();
                     setTimeout(function(){ 
-                    	$('#messages').hide("slow",function(){}); 
+                    	$('#wordNik-example').hide("slow",function(){}); 
                     }, 4000);
                    console.log(msg.responseText);
                 });
@@ -262,11 +285,11 @@
 						<div id="wordExplanation" class="span4 hidden">
 							Here
 						</div>
-						<div id="urbanDictionary-definition" class="hidden">
+						<div id="wordNik-example" class="hidden">
 							<hr/>
 							Here
 						</div>
-						<div id="urbanDictionary-tags" class="hidden">
+						<div id="urbanDictionary-definition" class="hidden">
 							<hr/>
 							Here
 						</div>

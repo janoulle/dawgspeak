@@ -34,7 +34,7 @@ $requestType = $_SERVER['REQUEST_METHOD'];
 if ($requestType === 'POST') {
 	$action = getPost("action");
 	if ($action){
-		if (strcmp($action,"useWordnik")){
+		if (strcmp($action,"useWordnik") == 0){
 			$word = getPost("word");
 			if ($word){
 				echo getTopWord($word);
