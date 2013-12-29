@@ -160,22 +160,6 @@
 				$.getJSON('http://api.urbandictionary.com/v0/define?term=' + word, function(data){
 					//console.log(data.list[0]);
 					//console.log(data.tags);
-					/*var arr = data.tags;
-					var msg = "<h4>Urban Dictionary Related Terms</h4>";
-					msg += "<p>";
-					for (var key in arr) {
-					    msg += arr[key] + ",";
-					}
-					if (msg.length > 3){
-						msg = msg.substring(0,msg.length-1);
-					}
-					msg += "</p>";
-					
-					$('#urbanDictionary-tags')
-						.html("")
-						.removeClass("hidden")
-						.addClass("urbandictionary")
-						.append(msg);*/
 					
 					var msg2 = "<h4>Top Urban Dictionary Definition</h4>";
 					msg2 += "<p>" + data.list[0].definition + "</p>";
@@ -244,6 +228,19 @@
                     }, 4000);
                    console.log(msg.responseText);
                 });
+			}
+			
+			function twitterExamples(word){
+				//https://api.twitter.com/1.1/search/tweets.json?q=%23freebandnames
+				//get the access token
+				$.get( "includes/getToken.php", { action : "getTweets", word : word }
+				)
+				.done(function(data) {
+
+				})
+				.fail(function(jqxhr, textStatus, error ) {
+				    console.log(textStatus);
+				});
 			}
 		</script>
   	</head>
