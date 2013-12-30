@@ -108,7 +108,7 @@ function testToken(){
 function getTweets($word, $tok){
 	$data = array();
 	$header = 'Authorization: Bearer ' . $tok . '';
-	$built_url = "https://api.twitter.com/1.1/search/tweets.json?q=" . $word . "&result_type=popular&count=4";
+	$built_url = "https://api.twitter.com/1.1/search/tweets.json?q=" . $word . "&result_type=mixed&count=4";
 	
 	$ch = curl_init();	
 	//http://unitstep.net/blog/2009/05/05/using-curl-in-php-to-access-https-ssltls-protected-sites/

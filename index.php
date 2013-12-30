@@ -2,109 +2,14 @@
 ?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>UGA Slang</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
-    	<style type="text/css">
-    	
-	    	body {
-			  padding-top: 60px;
-			  padding-bottom: 40px;
-			}
-
-    		.typeahead,
-			.tt-query,
-			.tt-hint {
-			  height: 50px;
-			  padding: 8px 12px;
-			  font-size: 24px;
-			  line-height: 30px;
-			  border: 2px solid #ccc;
-			  -webkit-border-radius: 8px;
-			     -moz-border-radius: 8px;
-			          border-radius: 8px;
-			  outline: none;
-			}
-			
-			.typeahead {
-			  background-color: #F0F0F0;
-			}
-			
-			.typeahead:focus {
-			  border: 2px solid #0097cf;
-			}
-			
-			.tt-query {
-			  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-			     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-			          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-			}
-			
-			.tt-hint {
-			  color: #fff;
-			}
-			
-			.tt-dropdown-menu {
-			  width: 100%;
-			  margin-top: 12px;
-			  padding: 8px 0;
-			  background-color: #fff;
-			  border: 1px solid #ccc;
-			  border: 1px solid rgba(0, 0, 0, 0.2);
-			  -webkit-border-radius: 8px;
-			     -moz-border-radius: 8px;
-			          border-radius: 8px;
-			  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
-			     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
-			          box-shadow: 0 5px 10px rgba(0,0,0,.2);
-			}
-			
-			.tt-suggestion {
-			  padding: 3px 20px;
-			  font-size: 18px;
-			  line-height: 24px;
-			}
-			
-			.tt-suggestion.tt-is-under-cursor {
-			  color: #F0F0F0;
-			  background-color: #428BCA;
-			  border: 2px solid #f0f0f0;
-			}
-			
-			.tt-suggestion p {
-			  margin: 0;
-			}
-			
-			/* Turn off hints which overlays*/
-			.tt-hint {
-			    font-size: 0 !important;
-			    visibility:hidden;
-			}
-			
-			.highlight{
-				font-weight:bold;
-				color: #0097cf;
-			}
-			
-			.urbandictionary, .wordnik {
-				width: 90%;
-				color: #696969;
-				margin-left: 0.6in;
-				line-height: 0.9em;
-				font-size: 3em;
-				border-width: 10px;
-			}
-			
-			.urbandictionary h4{
-				font-weight:bold;
-			}
-			
-    	</style>
-
+  	<head>
+	    <meta charset="utf-8">
+	    <title>UGA Slang</title>
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <meta name="description" content="">
+	    <meta name="author" content="">
+	   	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+	   	<link href="assets/css/dawgspeak.css" rel="stylesheet">
 	    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	    <!--[if lt IE 9]>
@@ -130,9 +35,6 @@
 				})
 				.on('typeahead:selected',function(obj,datum){
 					var word  = datum.value;
-                    //console.log(word);
-                    //console.log(obj);
-                    //console.log(datum);
                     $('#wordExplanation')
                     	.html("")
                     	.removeClass("hidden")
@@ -150,6 +52,7 @@
 						$('#wordExplanation').highlight(word);
 						urbanDefinition(word);
 						wordnikDefinition(word);
+						getTweets(word);
 				});
 			});
 			
@@ -190,7 +93,7 @@
                 })
                 .done(function(msg){
                     $('body').css('cursor', 'auto');
-                    console.log(msg);
+                    //console.log(msg);
                     if (msg.errorMessage.length == 0){
                     	if (msg.word !== null){
 	                    	var msgs = "<h4>Top Wordnik Example</h4>";
@@ -230,16 +133,42 @@
                 });
 			}
 			
-			function twitterExamples(word){
+			function getTweets(word){
 				//https://api.twitter.com/1.1/search/tweets.json?q=%23freebandnames
 				//get the access token
-				$.get( "includes/getToken.php", { action : "getTweets", word : word }
+				$.getJSON( "includes/getToken.php", { action : "getTweets", word : word }
 				)
-				.done(function(data) {
-
+				.done(function(json) {
+					//console.log(json);
+					if (json.errorMessage){
+						//console.log("Fail");
+						$('#twitterExamples')
+	                    	.html("")                    	
+	                   		.removeClass("hidden")
+							.addClass("twitterExamples")
+	                    	.append(json.errorMessage)
+	                    	.show();						
+					}else{
+						//console.log("Success");
+						var msg = "<h4>Twitter Example</h4>";
+						msg += "<ol>";
+						var statuses = json.statuses;
+						var l = statuses.length >= 5 ? 5:statuses.length;
+						for (var i = 0; i < l; i++){
+							msg += "<li><em>" + statuses[i].text + "</em></li>";
+						}
+						msg += "</ol>";
+						$('#twitterExamples')
+	                    	.html("")                    	
+	                   		.removeClass("hidden")
+							.addClass("twitterExamples")
+	                    	.append(msg)
+	                    	.show();
+					}
 				})
 				.fail(function(jqxhr, textStatus, error ) {
-				    console.log(textStatus);
+					var err = textStatus + ", " + error;
+				    console.log( "Request Failed: " + err );
 				});
 			}
 		</script>
@@ -287,6 +216,10 @@
 							Here
 						</div>
 						<div id="urbanDictionary-definition" class="hidden">
+							<hr/>
+							Here
+						</div>
+						<div id="twitterExamples" class="hidden">
 							<hr/>
 							Here
 						</div>
